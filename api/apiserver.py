@@ -7,7 +7,7 @@ import dns.resolver
 import tornado.web
 import logging
 import binascii
-import unirest
+import requests
 import urllib
 import copy
 import json
@@ -241,7 +241,7 @@ def send_email( to, subject, body, attachment_file, body_type="html" ):
         body_type: urllib.quote_plus( body ),
     }
 
-    thread = unirest.post( "https://api.mailgun.net/v3/" + settings["mailgun_sending_domain"] + "/messages",
+    thread = requests.post( "https://api.mailgun.net/v3/" + settings["mailgun_sending_domain"] + "/messages",
             headers={"Accept": "application/json"},
             params=email_data,
             auth=("api", settings["mailgun_api_key"] ),
@@ -667,6 +667,22 @@ def make_app():
         (r"/api/contactus", ContactUsHandler),
         (r"/api/resend_injection_email", ResendInjectionEmailHandler),
         (r"/api/logout", LogoutHandler),
+        (r"/js_callback", CallbackHandler),
+        (r"/page_callback", CollectPageHandler),
+        (r"/health", HealthHandler),
+        (r"/uploads/(.*)", tornado.web.StaticFileHandler, {"path": "uploads/"}),
+        (r"/api/record_injection", InjectionRequestHandler),
+        (r"/(.*)", HomepageHandler),
+    ], cookie_secret=settings["cookie_secret"])
+
+if __name__ == "__main__":
+    args = sys.argv
+    args.append("--log_file_prefix=logs/access.log")
+    tornado.options.parse_command_line(args)
+    Base.metadata.create_all(engine)
+    app = make_app()
+    app.listen( 8888 )
+    tornado.ioloop.IOLoop.current().start()
         (r"/js_callback", CallbackHandler),
         (r"/page_callback", CollectPageHandler),
         (r"/health", HealthHandler),
