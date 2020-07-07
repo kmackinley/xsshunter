@@ -1,5 +1,5 @@
-from initiate_database import *
-from urlparse import urlparse
+from models.initiate_database import *
+from urllib.parse import urlparse
 import binascii
 import bcrypt
 import os
