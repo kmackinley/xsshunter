@@ -1,4 +1,4 @@
-from initiate_database import *
+from models.initiate_database import *
 import binascii
 import bcrypt
 import time
