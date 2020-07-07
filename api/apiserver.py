@@ -32,7 +32,7 @@ try:
     with open( '../config.yaml', 'r' ) as f:
         settings = yaml.safe_load( f )
 except IOError:
-    print "Error reading config.yaml, have you created one? (Hint: Try running ./generate_config.py)"
+    print("Error reading config.yaml, have you created one? (Hint: Try running ./generate_config.py)")
     exit()
 
 CSRF_EXEMPT_ENDPOINTS = [ "/api/contactus", "/api/register", "/", "/api/login", "/health", "/favicon.ico", "/page_callback", "/api/record_injection" ]
@@ -155,7 +155,7 @@ def data_uri_to_file( data_uri ):
     return f
 
 def pprint( input_dict ):
-    print json.dumps(input_dict, sort_keys=True, indent=4, separators=(',', ': '))
+    print(json.dumps(input_dict, sort_keys=True, indent=4, separators=(',', ': ')))
 
 class GetXSSPayloadFiresHandler(BaseHandler):
     """
@@ -228,7 +228,7 @@ def record_callback_in_database( callback_data, request_handler ):
     return injection
 
 def email_sent_callback( response ):
-    print response.body
+    print(response.body)
 
 def send_email( to, subject, body, attachment_file, body_type="html" ):
     if body_type == "html":
@@ -323,7 +323,7 @@ class RegisterHandler(BaseHandler):
             self.write( json.dumps( return_dict ) )
             return
 
-	domain = user_data.get( "domain" )
+        domain = user_data.get( "domain" )
         if session.query( User ).filter_by( domain=domain ).first() or domain in FORBIDDEN_SUBDOMAINS:
             return_dict = {
                 "success": False,
