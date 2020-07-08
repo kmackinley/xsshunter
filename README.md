@@ -26,21 +26,20 @@ Those two records simply state where your server is located and that all subdoma
 **Setting Up Dependencies**  
 First, we need to install some dependencies for XSS Hunter to work properly. The two dependencies that XSS Hunter has are nginx for the web server and postgres for the data store. Setting these up is fairly easy, we’ll start with nginx:  
 
-```sudo apt-get install nginx```  
+`sudo apt-get install nginx`  
 
 After that, install postgres:  
 
-```sudo apt-get install postgresql postgresql-contrib```  
+`sudo apt-get install postgresql postgresql-contrib` 
 
 Now we’ll set up a new postgres user for XSS Hunter to use:  
-```
-sudo -i -u postgres  
-psql template1  
-CREATE USER xsshunter WITH PASSWORD 'EXAMPLE_PASSWORD';  
-CREATE DATABASE xsshunter;  
-\q  
-exit
-```  
+
+`sudo -i -u postgres`  
+`psql template1`  
+`CREATE USER xsshunter WITH PASSWORD 'EXAMPLE_PASSWORD';`  
+`CREATE DATABASE xsshunter;`  
+`\q`  
+`exit`  
 
 Now we have all the dependencies installed, let’s now move on to setting up the software itself.  
 
@@ -53,10 +52,12 @@ Now that we’ve cloned a copy of the code, let’s talk about XSS Hunter’s st
 
 Let’s start by running the config generation script:  
 
-```./generate_config.py``` 
+```./generate_config.py```  
+
 Once you’ve run this script you will now have two new files. One is the config.yaml file which contains all the settings for the XSS Hunter service and the other is the default file for nginx to use. Move the default file into nginx’s configuration folder by running the following command:  
 
 ```sudo mv default /etc/nginx/sites-enabled/default```  
+
 You must also ensure that you also have your SSL certificate and key files in the following locations:  
 
 /etc/nginx/ssl/yourdomain.com.crt; # Wildcard SSL certificate  
