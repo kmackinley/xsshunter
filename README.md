@@ -26,36 +26,37 @@ Those two records simply state where your server is located and that all subdoma
 **Setting Up Dependencies**  
 First, we need to install some dependencies for XSS Hunter to work properly. The two dependencies that XSS Hunter has are nginx for the web server and postgres for the data store. Setting these up is fairly easy, we’ll start with nginx:  
 
-sudo apt-get install nginx  
+```sudo apt-get install nginx```  
 
 After that, install postgres:  
 
-sudo apt-get install postgresql postgresql-contrib  
+```sudo apt-get install postgresql postgresql-contrib```  
 
 Now we’ll set up a new postgres user for XSS Hunter to use:  
 
-sudo -i -u postgres  
+```sudo -i -u postgres  
 psql template1  
 CREATE USER xsshunter WITH PASSWORD 'EXAMPLE_PASSWORD';  
 CREATE DATABASE xsshunter;  
 \q  
-exit  
+exit
+```  
 
 Now we have all the dependencies installed, let’s now move on to setting up the software itself.  
 
 **Setting Up Source Code**  
 Clone the Github repo:  
 
-git clone https://github.com/mandatoryprogrammer/xsshunter  
+```git clone https://github.com/mandatoryprogrammer/xsshunter``` 
 
 Now that we’ve cloned a copy of the code, let’s talk about XSS Hunter’s structure. The service is broken into two separate servers, the GUI and the API. This is done so that if necessary the GUI server could be completely replaced with something more powerful without any pain, the same going for the API.  
 
 Let’s start by running the config generation script:  
 
-./generate_config.py  
+```./generate_config.py``` 
 Once you’ve run this script you will now have two new files. One is the config.yaml file which contains all the settings for the XSS Hunter service and the other is the default file for nginx to use. Move the default file into nginx’s configuration folder by running the following command:  
 
-sudo mv default /etc/nginx/sites-enabled/default  
+```sudo mv default /etc/nginx/sites-enabled/default```  
 You must also ensure that you also have your SSL certificate and key files in the following locations:  
 
 /etc/nginx/ssl/yourdomain.com.crt; # Wildcard SSL certificate  
@@ -64,28 +65,29 @@ You must also ensure that you also have your SSL certificate and key files in th
 
 Now you need to restart nginx to apply these changes, run the following:  
 
-sudo service nginx restart  
+```sudo service nginx restart```  
 
 Awesome! Nginx is now all set up and ready to go. Let’s move on to the actual XSS Hunter service set up.  
 
 Now let’s start the API server! Run the following commands:  
 
-sudo apt-get install python-virtualenv python-dev libpq-dev libffi-dev  
+```sudo apt-get install python-virtualenv python-dev libpq-dev libffi-dev  
 cd xsshunter/api/  
 virtualenv env  
 . env/bin/activate  
 pip3 install -r requirements.txt  
 ./apiserver.py &  
+```
 The & after the ./apiserver.py command will run the server in the background. It can be terminated by restarting the host or by killing the process manually.  
 
 In this new terminal let’s start the GUI server, run the following commands (in a new terminal):  
 
-cd xsshunter/gui/  
+```cd xsshunter/gui/  
 virtualenv env  
 . env/bin/activate  
 pip3 install -r requirements.txt  
 ./guiserver.py &  
-
+```
 Congrats! You should now have a working XSS Hunter server. Visit your website to confirm everything is functioning as expected. You can now detach from tmux by typing CTRL+B followed by D.  
 
 # Summary of Functionality
