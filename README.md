@@ -33,8 +33,8 @@ After that, install postgres:
 ```sudo apt-get install postgresql postgresql-contrib```  
 
 Now we’ll set up a new postgres user for XSS Hunter to use:  
-
-```sudo -i -u postgres  
+```
+sudo -i -u postgres  
 psql template1  
 CREATE USER xsshunter WITH PASSWORD 'EXAMPLE_PASSWORD';  
 CREATE DATABASE xsshunter;  
